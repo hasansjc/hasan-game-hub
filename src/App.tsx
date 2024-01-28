@@ -54,7 +54,7 @@ function App() {
 				</Show>
 				<GridItem area="main" overflowY="auto" height="100vh">
 					<GameHeading  selectedGenre={gameQuery.genre} selectedplatform={gameQuery.platform}/>
-					<HStack marginY={2}>
+					<HStack >
 						<PlatformSelector
 							selectedplatform={gameQuery.platform}
 							onSelectPlatform={handleSelectedPlatform}
