@@ -9,7 +9,7 @@ interface Props {
 const GameHeading = ({ selectedplatform, selectedGenre }: Props) => {
 	return (
 		<div>
-			<Heading marginY={5}>
+			<Heading marginBottom={5}>
 				{selectedplatform?.name} {selectedGenre?.name} Games
 			</Heading>
 		</div>
