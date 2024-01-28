@@ -1,4 +1,4 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Show } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import GameGrid from "./components/GameGrid";
 import GenreList from "./components/GenreList";
@@ -6,20 +6,25 @@ import { useState } from "react";
 import { Genre } from "./hooks/useGenre";
 import PlatformSelector from "./components/PlatformSelector";
 import { Platform } from "./hooks/usePlatforms";
+import SortSelector from "./components/SortSelector";
 
+export interface GameQuery {
+	genre: Genre | null;
+	platform: Platform | null;
+	sortOrder: string;
+	searchText : string
+}
 function App() {
-	const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-	const [selectedplatform, setselectedplatform] = useState<Platform | null>(
-		null
-	);
-
+	const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
 	const handleSelectGenre = (genre: Genre): void => {
-		console.log(genre);
-		setSelectedGenre(genre);
+		setGameQuery({ ...gameQuery, genre });
 	};
 	const handleSelectedPlatform = (platform: Platform): void => {
-		console.log(platform);
-		setselectedplatform(platform);
+		setGameQuery({ ...gameQuery, platform });
+	};
+
+	const handleSelectSortOrder = (sortOrder: string): void => {
+		setGameQuery({ ...gameQuery, sortOrder });
 	};
 
 	return (
@@ -34,25 +39,30 @@ function App() {
 					lg: "200px 1fr",
 				}}>
 				<GridItem area="nav">
-					<Navbar />
+					<Navbar onSearch={(searchText) => {
+						setGameQuery({...gameQuery, searchText})
+					}} />
 				</GridItem>
 				<Show above="lg">
 					<GridItem area="aside" paddingX={5} overflowY="auto" height="100vh">
 						<GenreList
 							onSelectGenre={handleSelectGenre}
-							selectedGenre={selectedGenre}
+							selectedGenre={gameQuery.genre}
 						/>
 					</GridItem>
 				</Show>
 				<GridItem area="main" overflowY="auto" height="100vh">
-					<PlatformSelector
-						selectedplatform={selectedplatform}
-						onSelectPlatform={handleSelectedPlatform}
-					/>
-					<GameGrid
-						selectedGenre={selectedGenre}
-						selectedPlatform={selectedplatform}
-					/>
+					<HStack>
+						<PlatformSelector
+							selectedplatform={gameQuery.platform}
+							onSelectPlatform={handleSelectedPlatform}
+						/>
+						<SortSelector
+							onSelectSortOrder={handleSelectSortOrder}
+							selectedOrder={gameQuery.sortOrder}
+						/>
+					</HStack>
+					<GameGrid gameQuery={gameQuery} />
 				</GridItem>
 			</Grid>
 		</div>
