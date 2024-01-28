@@ -18,9 +18,8 @@ const GameGrid = ({ gameQuery }: Props) => {
 		isloading,
 	} = useGames(gameQuery);
 	const Skeletons = [1, 2, 3, 4, 5, 6];
+	if(error) return  <Text> {error}</Text>
 	return (
-		<div>
-			{error && <Text> {error}</Text>}
 			<SimpleGrid
 				columns={{ sm: 1, md: 2, lg: 4, xl: 4 }}
 				spacing={3}
@@ -37,8 +36,6 @@ const GameGrid = ({ gameQuery }: Props) => {
 					</GameCardContainer>
 				))}
 			</SimpleGrid>
-			;
-		</div>
 	);
 };
 
